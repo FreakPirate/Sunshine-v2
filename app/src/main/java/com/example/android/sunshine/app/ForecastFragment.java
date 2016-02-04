@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import java.io.BufferedReader;
@@ -26,6 +27,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.text.format.Time;
+import android.widget.Toast;
+
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -111,6 +114,15 @@ public class ForecastFragment extends Fragment {
         //so that it can request for new item
         listView.setAdapter(mForecastAdapter);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String forecast = adapterView.getItemAtPosition(i).toString();
+
+                Toast toast = Toast.makeText(getActivity(), forecast, Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
         return rootView;
     }
 
@@ -331,9 +343,7 @@ public class ForecastFragment extends Fragment {
             if (result != null){
                 mForecastAdapter.clear();
 
-                for (String dayForecastStr : result){
-                    mForecastAdapter.add(dayForecastStr);
-                }
+                mForecastAdapter.addAll(result);
             }
         }
     }
