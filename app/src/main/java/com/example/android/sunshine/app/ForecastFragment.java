@@ -2,9 +2,11 @@ package com.example.android.sunshine.app;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,6 +26,7 @@ import java.util.Arrays;
 public class ForecastFragment extends Fragment {
 
     ArrayAdapter<String> mForecastAdapter;
+    private final String LOG_TAG = ForecastFragment.class.getSimpleName();
 
     public ForecastFragment() {
 
@@ -57,6 +60,11 @@ public class ForecastFragment extends Fragment {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
             updateWeather();
+            return true;
+        }
+
+        if (id == R.id.action_map){
+            openPreferredLocationInMap();
             return true;
         }
 
@@ -122,13 +130,34 @@ public class ForecastFragment extends Fragment {
     }
 
     private void updateWeather(){
-        FetchWeatherTask weatherTask = new FetchWeatherTask(this);
+        FetchWeatherTask weatherTask = new FetchWeatherTask(this, getActivity());
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String postalCode = sharedPrefs.getString(getString(R.string.pref_location_key),
                 getString(R.string.pref_location_default_value));
 
         weatherTask.execute(postalCode);
+    }
+
+    private void openPreferredLocationInMap(){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String location = prefs.getString(
+                getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default_value)
+        );
+
+        Uri geoLocation = Uri.parse("geo:0,0?").buildUpon()
+                .appendQueryParameter("q", location)
+                .build();
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(geoLocation);
+
+        if(intent.resolveActivity(getActivity().getPackageManager()) != null){
+            startActivity(intent);
+        }else {
+            Log.d(LOG_TAG, "Couldn't call " + location + ", no receiving apps installed!");
+        }
     }
 
 }

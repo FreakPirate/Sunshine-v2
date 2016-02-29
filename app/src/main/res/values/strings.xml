@@ -16,7 +16,14 @@
     <string name="pref_location_key">location</string>
     <string name="pref_location_default_value">462001,IN</string>
 
-    <string name="pref_temperature_label">Temperature Units</string>
-    <string name="pref_temperature_key">temperature</string>
-    <string name="pref_temperature_default_value">Metric</string>
+    <string name="pref_units_label">Temperature Units</string>
+    <string name="pref_units_key">temperature</string>
+
+    <string name="pref_units_metric">metric</string>
+    <string name="pref_units_imperial">imperial</string>
+
+    <string name="pref_units_label_metric">Metric</string>
+    <string name="pref_units_label_imperial">Imperial</string>
+
+    <string name="title_map">Map</string>
 </resources>
