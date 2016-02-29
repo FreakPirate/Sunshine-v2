@@ -7,10 +7,4 @@
         android:title="@string/title_refresh"
         app:showAsAction="ifRoom"/>
 
-    <item
-        android:id="@+id/action_map"
-        android:icon="@drawable/ic_my_location_white_24dp"
-        android:title="@string/title_map"
-        app:showAsAction="always"/>
-
 </menu>

@@ -63,11 +63,6 @@ public class ForecastFragment extends Fragment {
             return true;
         }
 
-        if (id == R.id.action_map){
-            openPreferredLocationInMap();
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -137,27 +132,6 @@ public class ForecastFragment extends Fragment {
                 getString(R.string.pref_location_default_value));
 
         weatherTask.execute(postalCode);
-    }
-
-    private void openPreferredLocationInMap(){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String location = prefs.getString(
-                getString(R.string.pref_location_key),
-                getString(R.string.pref_location_default_value)
-        );
-
-        Uri geoLocation = Uri.parse("geo:0,0?").buildUpon()
-                .appendQueryParameter("q", location)
-                .build();
-
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(geoLocation);
-
-        if(intent.resolveActivity(getActivity().getPackageManager()) != null){
-            startActivity(intent);
-        }else {
-            Log.d(LOG_TAG, "Couldn't call " + location + ", no receiving apps installed!");
-        }
     }
 
 }
